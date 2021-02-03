@@ -12,6 +12,7 @@ import { IssueContext, CommitContext } from "@gitpod/gitpod-protocol";
 import { GitpodInfoService } from "../../common/gitpod-info";
 import { GitpodServiceProvider } from "../gitpod-service-provider";
 import { GitHosterModel } from "./model/githoster-model";
+import { contextUrlToUrl } from '@gitpod/gitpod-protocol/lib/util/context-url';
 
 @injectable()
 export abstract class GitState {
@@ -199,7 +200,7 @@ export abstract class GitState {
             }
         }
         if (CommitContext.is(ws.workspace.context)) {
-            const url = new URL(ws.workspace.contextURL);
+            const url = contextUrlToUrl(ws.workspace.contextURL);
             return {
                 label: `${url.pathname}`,
                 url: ws.workspace.context.repository.cloneUrl.replace('.git','')

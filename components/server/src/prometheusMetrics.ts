@@ -17,3 +17,34 @@ export function increaseLoginCounter(status: string, auth_host: string) {
         auth_host,
     });
 }
+
+const apiConnectionCounter = new prometheusClient.Counter({
+    name: 'gitpod_api_connection',
+    help: 'Total amount of established API connections',
+    registers: [prometheusClient.register],
+});
+
+export function increaseApiConnectionCounter() {
+    apiConnectionCounter.inc();
+}
+
+const apiConnectionClosedCounter = new prometheusClient.Counter({
+    name: 'gitpod_api_connection_closed',
+    help: 'Total amount of closed API connections',
+    registers: [prometheusClient.register],
+});
+
+export function increaseApiConnectionClosedCounter() {
+    apiConnectionClosedCounter.inc();
+}
+
+const apiCallCounter = new prometheusClient.Counter({
+    name: 'gitpod_api_call',
+    help: 'Total amount of API calls per method',
+    labelNames: ['method'],
+    registers: [prometheusClient.register],
+});
+
+export function increaseApiCallCounter(method: string) {
+    apiCallCounter.inc({ method });
+}
